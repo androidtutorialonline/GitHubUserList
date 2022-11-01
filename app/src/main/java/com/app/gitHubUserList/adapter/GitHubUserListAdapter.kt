@@ -9,15 +9,12 @@ class GitHubUserListAdapter : BaseRecyclerViewAdapter<GetUserListItem, ItemUserL
 
     override fun getLayout() = R.layout.item_user_list
 
-    // creating a variable for array list and context.
-    private var courseModelArrayList: ArrayList<GetUserListItem>? = null
-
     override fun onBindViewHolder(
         holder: Companion.BaseViewHolder<ItemUserListBinding>,
         position: Int
     ) {
         holder.binding.getUserListItem = items[position]
-        holder.binding.root.setOnClickListener {
+        holder.binding.favImgId.setOnClickListener {
             listener?.invoke(items[position])
         }
     }

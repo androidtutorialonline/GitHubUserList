@@ -14,12 +14,12 @@ import com.app.gitHubUserList.data.api.StatusCalled
 import com.app.gitHubUserList.databinding.ActivityMainBinding
 import com.app.gitHubUserList.model.GetUserListItem
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private var userArrayList: List<GetUserListItem> = ArrayList()
+    private var favoriteArrayList: ArrayList<GetUserListItem> = ArrayList()
     private lateinit var mAdapter: GitHubUserListAdapter
     private lateinit var mBinding: ActivityMainBinding
 
@@ -74,6 +74,18 @@ class MainActivity : AppCompatActivity() {
         mBinding.dayListId.layoutManager = layoutManager
         mBinding.dayListId.adapter = mAdapter
         mAdapter.addItems(ArrayList())
+
+        mAdapter.listener = { item ->
+            if (!favoriteArrayList.contains(item)) {
+                if (item.isCheck) {
+                    favoriteArrayList.remove(item)
+                } else {
+                    favoriteArrayList.add(item)
+                }
+            }
+            item.isCheck = !item.isCheck
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -93,5 +105,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
         return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.actionFavorite) {
+            mAdapter.addItems(favoriteArrayList)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
