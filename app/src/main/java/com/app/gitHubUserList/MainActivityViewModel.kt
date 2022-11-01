@@ -1,6 +1,5 @@
 package com.app.gitHubUserList
 
-import android.app.Activity
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +8,10 @@ import com.app.gitHubUserList.data.api.MainRepository
 import com.app.gitHubUserList.data.api.Resource
 import com.app.gitHubUserList.model.GetUserListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(

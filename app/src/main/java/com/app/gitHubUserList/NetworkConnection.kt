@@ -7,7 +7,7 @@ import android.util.Log
 
 open class NetworkConnection {
 
-    public fun isOnline(context: Context): Boolean {
+    fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.let {
@@ -28,5 +28,4 @@ open class NetworkConnection {
         }
         return false
     }
-
 }
