@@ -1,6 +1,7 @@
 package com.app.gitHubUserList.di
 
 import android.content.Context
+import com.app.gitHubUserList.MyApplication
 import com.app.gitHubUserList.data.RemoteDataSource
 import com.app.gitHubUserList.data.api.ApiService
 import dagger.Module
@@ -23,4 +24,9 @@ object AppModule {
         return remoteDataSource.buildApi(ApiService::class.java, context)
     }
 
+    @Singleton
+    @Provides
+    fun provideApplication(@ApplicationContext app: Context): MyApplication {
+        return app as MyApplication
+    }
 }
