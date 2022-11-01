@@ -37,11 +37,11 @@ class MainActivity : AppCompatActivity() {
                 StatusCalled.SUCCESS -> {
                     mBinding.progress.visibility = View.GONE
                     it.data?.let { getUserList -> renderList(getUserList) }
-                    mBinding.dayListId.visibility = View.VISIBLE
+                    mBinding.userListId.visibility = View.VISIBLE
                 }
                 StatusCalled.LOADING -> {
                     mBinding.progress.visibility = View.VISIBLE
-                    mBinding.dayListId.visibility = View.GONE
+                    mBinding.userListId.visibility = View.GONE
                 }
                 StatusCalled.ERROR -> {
                     //Handle Error
@@ -53,11 +53,27 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.filterUserList.observe(this) {
             if (it.isEmpty()) {
+                mBinding.noInternetTxt.text = getString(R.string.no_data_found)
+                showMessageHideList(showMessage = View.VISIBLE, HideList = View.GONE)
                 Toast.makeText(this, getString(R.string.no_data_found), Toast.LENGTH_LONG).show()
             } else {
+                showMessageHideList(showMessage = View.GONE, HideList = View.VISIBLE)
                 mAdapter.filterList(it)
             }
         }
+
+        viewModel.isOnLine.observe(this) {
+            if (it) {
+                showMessageHideList(showMessage = View.GONE, HideList = View.VISIBLE)
+            } else {
+                showMessageHideList(showMessage = View.VISIBLE, HideList = View.GONE)
+            }
+        }
+    }
+
+    private fun showMessageHideList(showMessage: Int, HideList: Int) {
+        mBinding.noInternetTxt.visibility = showMessage
+        mBinding.userListId.visibility = HideList
     }
 
     private fun renderList(userList: List<GetUserListItem>?) {
@@ -69,15 +85,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setAdapter(mBinding: ActivityMainBinding) {
         mAdapter = GitHubUserListAdapter()
-        mBinding.dayListId.setHasFixedSize(true)
+        mBinding.userListId.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(this)
-        mBinding.dayListId.layoutManager = layoutManager
-        mBinding.dayListId.adapter = mAdapter
+        mBinding.userListId.layoutManager = layoutManager
+        mBinding.userListId.adapter = mAdapter
         mAdapter.addItems(ArrayList())
 
         mAdapter.listener = { item ->
             if (!favoriteArrayList.contains(item)) {
                 if (item.isCheck) {
+                    item.isCheck = false
                     favoriteArrayList.remove(item)
                 } else {
                     favoriteArrayList.add(item)
@@ -92,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.search_menu, menu)
         val searchItem: MenuItem = menu.findItem(R.id.actionSearch)
-        val searchView: SearchView = searchItem.getActionView() as SearchView
+        val searchView: SearchView = searchItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {

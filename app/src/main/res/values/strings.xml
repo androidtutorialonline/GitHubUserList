@@ -5,4 +5,5 @@
     <string name="no_data_found">No data found..</string>
     <string name="base_url">https://api.github.com</string>
     <string name="favorite">Favorite</string>
+    <string name="no_internet_txt">No internet connectiion</string>
 </resources>

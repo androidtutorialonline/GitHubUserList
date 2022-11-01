@@ -24,9 +24,11 @@ class MainActivityViewModel @Inject constructor(
 
     val userInfo = MutableLiveData<Resource<List<GetUserListItem>>>()
     val filterUserList = MutableLiveData<ArrayList<GetUserListItem>>()
+    val isOnLine = MutableLiveData<Boolean>()
 
     fun getUserList() = viewModelScope.launch {
         if (NetworkConnection().isOnline(application.applicationContext)) {
+            isOnLine.value = true
             userInfo.postValue(Resource.loading(null))
             apiHelper.getUserList()
                 .catch { e ->
@@ -36,6 +38,7 @@ class MainActivityViewModel @Inject constructor(
                     userInfo.postValue(Resource.success(it))
                 }
         } else {
+            isOnLine.value = false
             Toast.makeText(application.applicationContext, application.applicationContext.getString(R.string.check_internet_connection), Toast.LENGTH_SHORT).show()
         }
     }

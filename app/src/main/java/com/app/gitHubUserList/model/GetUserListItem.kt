@@ -23,7 +23,7 @@ data class GetUserListItem(
     @Json(name = "id")
     val id: Int? = 0,
     @Json(name = "login")
-    val login: String? = "",
+    var login: String? = "",
     @Json(name = "node_id")
     val nodeId: String? = "",
     @Json(name = "organizations_url")
